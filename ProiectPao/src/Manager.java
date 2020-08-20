@@ -87,26 +87,6 @@ public class Manager {
         }
     }
 
-    public void addDestination(Destination dest){
-        this.cities.add(dest);
-
-        String dbUrl="jdbc:mysql://localhost:3306/pao";
-        String dbUser="root";
-        String dbPass="root";
-
-        try{
-            Connection connection=DriverManager.getConnection(dbUrl,dbUser,dbPass);
-            Statement statement=connection.createStatement();
-            String sqlQuery="insert into destinations (popularity,name,avgpriceperday) values("+dest.popularity+",'"+dest.name+"',"+dest.avgPricePerDay+")";
-            System.out.println(sqlQuery);
-            statement.execute(sqlQuery);
-            statement.close();
-            connection.close();
-        } catch(Exception e){
-            System.out.println(e);
-        }
-    }
-
     public void printDestinations(){
         for(Destination dest:cities){
             System.out.println(dest.toString());

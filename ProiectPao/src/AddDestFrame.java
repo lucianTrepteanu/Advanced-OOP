@@ -14,6 +14,7 @@ public class AddDestFrame {
         nameField=new JTextField("Add city name");
         nameField.setSize(50,100);
         Manager manager=Manager.getInst();
+        DestinationService destinationService=DestinationService.getInst();
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridLayout(3,1));
@@ -29,7 +30,7 @@ public class AddDestFrame {
                 if(idx<0){
                     Destination dest=new Destination(name);
                     System.out.println(dest);
-                    manager.addDestination(dest);
+                    destinationService.addDestination(dest);
                     label.setText("City added successfully");
                 } else {
                     label.setText("City already added");

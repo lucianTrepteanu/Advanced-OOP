@@ -4,6 +4,8 @@ public class Route {
     private double distance;
     private int time;
     private double moneyCost;
+    private double index;
+    static int currIdx=0;
 
     public Route(int fDest, int sDest, double distance, int time, double moneyCost) {
         this.fDest = fDest;
@@ -11,6 +13,12 @@ public class Route {
         this.distance = distance;
         this.time = time;
         this.moneyCost = moneyCost;
+        this.index = currIdx;
+        currIdx++;
+    }
+
+    public double getIndex() {
+        return index;
     }
 
     void printData(){
