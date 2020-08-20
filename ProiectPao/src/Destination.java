@@ -2,22 +2,23 @@ import java.util.ArrayList;
 
 public class Destination {
     protected int popularity;
-    public String name;
-    public int avgPricePerDay;
+    private String name;
+    private int avgPricePerDay;
     public ArrayList<Route> routes;
+    private int index;
 
     public Destination(String name) {
         this.name = name;
         this.popularity=0;
         this.avgPricePerDay=0;
-        routes=new ArrayList<Route>();
+        this.routes=new ArrayList<Route>();
     }
 
     public Destination(int popularity, String name) {
         this.popularity = popularity;
         this.name = name;
         this.avgPricePerDay=0;
-        routes=new ArrayList<Route>();
+        this.routes=new ArrayList<Route>();
     }
 
     public Destination(int popularity, String name, int avgPricePerDay) {
@@ -27,6 +28,13 @@ public class Destination {
         routes=new ArrayList<Route>();
     }
 
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
     public int getAvgPricePerDay() {
         return avgPricePerDay;
     }

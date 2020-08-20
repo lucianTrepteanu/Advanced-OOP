@@ -11,6 +11,7 @@ public class Main {
     public static void main(String[]args){
         Manager manager=Manager.getInst();
         manager.loadDestinations();
+        //manager.printDestinations();
         manager.loadRoutes();
         DestinationService destinationService=DestinationService.getInst();
 
@@ -31,14 +32,16 @@ public class Main {
 
         //manager.printRoutes();
 
-        //System.out.println(manager.canReach("Dragasani","Rm. Valcea"));
+        //System.out.println(manager.canReach("Dragasani","Paris"));
 
-        //System.out.println(manager.getBest("Bucuresti","Rm. Valcea",new DistanceCost()));
+        //System.out.println(manager.getBest("Dragasani","Bucuresti",new DistanceCost()));
 
-        //Route route=new Route(1,2,50,90,45);
-        //RouteService routeService=RouteService.getInst();
+        //Route route=new Route("Paris","Toronto",3000,700,600);
+        RouteService routeService=RouteService.getInst();
+        //System.out.println(routeService.showRoutes());
+        System.out.println();
         //routeService.addRoute(route);
-        //manager.printRoutes();
+        manager.printRoutes();
 
         //System.out.println(destinationService.showDestinations());
 

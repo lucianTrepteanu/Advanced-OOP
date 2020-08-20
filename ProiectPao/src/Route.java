@@ -1,35 +1,37 @@
 public class Route {
-    private int fDest;
-    private int sDest;
+    private String fDest;
+    private String sDest;
     private double distance;
     private int time;
     private double moneyCost;
-    private double index;
-    static int currIdx=0;
 
-    public Route(int fDest, int sDest, double distance, int time, double moneyCost) {
+    private int index;
+
+    public Route(String fDest, String sDest, double distance, int time, double moneyCost) {
         this.fDest = fDest;
         this.sDest = sDest;
         this.distance = distance;
         this.time = time;
         this.moneyCost = moneyCost;
-        this.index = currIdx;
-        currIdx++;
     }
 
     public double getIndex() {
         return index;
     }
 
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
     void printData(){
         System.out.println("Route from city "+this.fDest+" to "+this.sDest+" of length "+this.distance);
     }
 
-    public int getfDest() {
+    public String getfDest() {
         return fDest;
     }
 
-    public int getsDest() {
+    public String getsDest() {
         return sDest;
     }
 

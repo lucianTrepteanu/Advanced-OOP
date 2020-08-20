@@ -48,16 +48,24 @@ public class Manager {
             Statement statement=connection.createStatement();
             String sqlQuery="select * from routes";
             ResultSet rs=statement.executeQuery(sqlQuery);
+
+            int currIdx=0;
             while(rs.next()){
-                int fDest=Integer.parseInt(rs.getString("fdest"));
-                int sDest=Integer.parseInt(rs.getString("sdest"));
+                String fDest=rs.getString("fdest");
+                String sDest=rs.getString("sdest");
                 double distance=Double.parseDouble(rs.getString("distance"));
                 int time=Integer.parseInt(rs.getString("time"));
                 double money=Double.parseDouble(rs.getString("money"));
 
+                int fIdx=this.getIndex(fDest);
+                int sIdx=this.getIndex(sDest);
+
                 Route route=new Route(fDest,sDest,distance,time,money);
-                this.cities.get(fDest).addRoute(route);
-                this.cities.get(sDest).addRoute(route);
+                route.setIndex(currIdx);
+                currIdx++;
+
+                this.cities.get(fIdx).addRoute(route);
+                this.cities.get(sIdx).addRoute(route);
                 this.routes.add(route);
             }
             statement.close();
@@ -74,8 +82,8 @@ public class Manager {
             return;
         }
         for(Route route:cities.get(idx).routes){
-            String firstName=cities.get(route.getfDest()).getName();
-            String secondName=cities.get(route.getsDest()).getName();
+            String firstName=route.getfDest();
+            String secondName=route.getsDest();
 
             System.out.println(firstName+"-"+secondName+": distance: "+route.getDistance()+" time "+route.getTime()+" money "+route.getMoneyCost());
         }
@@ -95,7 +103,7 @@ public class Manager {
 
     protected int getIndex(String name){
         for(int i=0;i<this.cities.size();i++){
-            if(this.cities.get(i).name.equals(name)){
+            if(this.cities.get(i).getName().equals(name)){
                 return i;
             }
         }
@@ -103,25 +111,38 @@ public class Manager {
     }
 
     public boolean canReach(String cityA, String cityB){
-        int idxA=getIndex(cityA);
-        int idxB=getIndex(cityB);
+        LinkedList<String> que=new LinkedList<String>();
+        Map<String,Boolean> visited=new HashMap<String,Boolean>();
 
-        LinkedList<Integer> que=new LinkedList<Integer>();
-        boolean []visited=new boolean[cities.size()];
-        visited[idxA]=true;
-        que.add(idxA);
+        visited.put(cityA,true);
+        visited.put(cityB,false);
+        que.add(cityA);
+
         while(que.size()>0){
-            int currentNode=que.getFirst();
+            String currentNode=que.getFirst();
+            System.out.println(currentNode);
+
+            int currIdx=this.getIndex(currentNode);
+
+            System.out.println(currIdx);
             que.removeFirst();
-            for(Route r:cities.get(currentNode).routes){
-                if(visited[r.getsDest()]==false){
-                    visited[r.getsDest()]=true;
-                    que.add(r.getsDest());
+            for(Route r:cities.get(currIdx).routes){
+                String other="";
+                if(r.getfDest().compareTo(this.cities.get(currIdx).getName())==0){
+                    other=r.getsDest();
+                } else {
+                    other=r.getfDest();
+                }
+                System.out.println(other);
+
+                if(visited.containsKey(other)==false || visited.get(other)==false){
+                    visited.put(other,true);
+                    que.add(other);
                 }
             }
         }
 
-        return visited[idxB];
+        return visited.get(cityB);
     }
 
     public RouteCost getBest(String cityA,String cityB,Comparator<RouteCost> comparator){
@@ -157,8 +178,15 @@ public class Manager {
             }
 
             for(Route r:cities.get(currentNode.getCurrIdx()).routes){
+                int other=0;
+                String alt=this.cities.get(currentNode.getCurrIdx()).getName();
+                if(r.getfDest().compareTo(alt)==0){
+                    other=this.getIndex(r.getsDest());
+                } else {
+                    other=this.getIndex(r.getfDest());
+                }
                 RouteCost newCost=new RouteCost(currentNode.getTime()+r.getTime(),currentNode.getDistance()+r.getDistance(),
-                        currentNode.getMoney()+r.getMoneyCost(),r.getsDest());
+                        currentNode.getMoney()+r.getMoneyCost(),other);
                 heap.add(newCost);
             }
         }

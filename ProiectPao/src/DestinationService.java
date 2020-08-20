@@ -49,7 +49,7 @@ public class DestinationService {
         try{
             Connection connection= DriverManager.getConnection(dbUrl,dbUser,dbPass);
             Statement statement=connection.createStatement();
-            String sqlQuery="insert into destinations (popularity,name,avgpriceperday) values("+dest.popularity+",'"+dest.name+"',"+dest.avgPricePerDay+")";
+            String sqlQuery="insert into destinations (popularity,name,avgpriceperday) values("+dest.popularity+",'"+dest.getName()+"',"+dest.getAvgPricePerDay()+")";
             System.out.println(sqlQuery);
             statement.execute(sqlQuery);
             statement.close();
@@ -62,7 +62,7 @@ public class DestinationService {
     public void deleteDestination(Destination dest){
         Manager manager=Manager.getInst();
 
-        String currName=dest.name;
+        String currName=dest.getName();
         int idx=manager.getIndex(currName);
 
         manager.cities.remove(idx);

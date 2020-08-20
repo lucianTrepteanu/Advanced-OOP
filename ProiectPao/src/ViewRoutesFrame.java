@@ -9,9 +9,7 @@ public class ViewRoutesFrame {
         Manager manager=Manager.getInst();
         String allContent="<html><pre>";
         for(Route route: manager.routes){
-            String firstName=manager.cities.get(route.getfDest()).getName();
-            String secondName=manager.cities.get(route.getsDest()).getName();
-            allContent+=firstName+"-"+secondName+" "+route.getDistance()+" "+route.getTime()+" "+route.getMoneyCost();
+            allContent+=route.getfDest()+"-"+route.getsDest()+" "+route.getDistance()+" "+route.getTime()+" "+route.getMoneyCost();
             allContent+="\n";
         }
         allContent+="</pre></html>";
