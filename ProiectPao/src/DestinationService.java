@@ -45,6 +45,13 @@ public class DestinationService {
         Audit.printQuery("addDestination",Thread.currentThread().getName());
 
         Manager manager=Manager.getInst();
+        for(Destination d: manager.cities){
+            if(d.getName().equals(dest.getName())==true){
+                System.out.println("Destination already added");
+                return;
+            }
+        }
+
         manager.cities.add(dest);
 
         String dbUrl="jdbc:mysql://localhost:3306/pao";

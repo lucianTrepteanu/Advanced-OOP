@@ -12,9 +12,13 @@ public class Main {
         Manager manager=Manager.getInst();
         manager.loadDestinations();
         manager.loadRoutes();
+        manager.loadTrips();
+        manager.loadTravellers();
+
         DestinationService destinationService=DestinationService.getInst();
         RouteService routeService=RouteService.getInst();
         TripService tripService=TripService.getInst();
+        TravellerService travellerService=TravellerService.getInst();
 
         /*Destination destBeius=new Destination(1000,"Beius",400);
         destinationService.addDestination(destBeius);
@@ -50,8 +54,29 @@ public class Main {
 
         Trip trip=new Trip(cityA,cityB,100,200.0,0);
         tripService.addTrip(trip);
-
         System.out.println(tripService.showTrips());*/
+
+        /*Traveller tr1=new AllRoutesTraveller("Lucian","1991024123456","Dragasani");
+        Traveller tr2=new AllRoutesTraveller("Dragos","1234567891234","Bucuresti");*/
+
+        /*travellerService.addTraveller(tr1);
+        System.out.println(manager.travellers);
+        travellerService.addTraveller(tr2);
+        System.out.println(manager.travellers);*/
+
+        /*Traveller tr2=new AirFearTraveller("Dragos","1234567891234","botosani");
+        System.out.println(manager.travellers);
+        travellerService.deleteTraveller(tr2);
+        System.out.println(manager.travellers);*/
+        /*travellerService.editTraveller("1991024123456","Lucian","Dragasani");
+        System.out.println(manager.travellers.get(0).getCity());*/
+
+        //System.out.println(tr1 instanceof AirFearTraveller);
+        //System.out.println(tr1.canTravel("Mallorca"));
+        //System.out.println(tr1.getRecommendations());
+
+        /*System.out.println(tr1.canTravel("Mallorca"));
+        System.out.println(tr2.canTravel("Mallorca"));*/
 
         //MainFrame mainFrame=new MainFrame();
     }

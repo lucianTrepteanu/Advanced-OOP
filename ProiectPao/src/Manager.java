@@ -15,6 +15,7 @@ public class Manager {
     public ArrayList<Destination> cities=new ArrayList<Destination>();
     public ArrayList<Route> routes=new ArrayList<Route>();
     public ArrayList<Trip> trips=new ArrayList<Trip>();
+    public ArrayList<Traveller> travellers=new ArrayList<Traveller>();
 
     public void updatePopularity(Trip trip) throws IOException{
         if(trip.isUsed()==1){
@@ -88,7 +89,7 @@ public class Manager {
 
                 Route route=null;
 
-                if(rtype=="air"){
+                if(rtype.equals("air")){
                     route=new AirRoute(fDest,sDest,distance,time,money);
                 } else {
                     route=new GroundRoute(fDest,sDest,distance,time,money);
@@ -129,14 +130,44 @@ public class Manager {
                 int fromIdx=manager.getIndex(fromName);
                 int toIdx=manager.getIndex(toName);
 
-                System.out.println(fromIdx);
-                System.out.println(toIdx);
-
                 Trip trip=new Trip(manager.cities.get(fromIdx),manager.cities.get(toIdx),cntPers,price,used);
-                System.out.println(trip.isUsed());
-                System.out.println();
+
                 this.updatePopularity(trip);
                 this.trips.add(trip);
+            }
+            statement.close();
+            connection.close();
+        } catch (Exception e){
+            System.out.println(e);
+        }
+    }
+
+    public void loadTravellers() throws IOException{
+        Audit.printQuery("loadTravellers",Thread.currentThread().getName());
+
+        this.travellers.clear();
+        String dbUrl="jdbc:mysql://localhost:3306/pao";
+        String dbUser="root";
+        String dbPass="root";
+
+        try{
+            Connection connection=DriverManager.getConnection(dbUrl,dbUser,dbPass);
+            Statement statement=connection.createStatement();
+            String sqlQuery="select * from travellers";
+            ResultSet rs=statement.executeQuery(sqlQuery);
+            while(rs.next()){
+                String name=rs.getString("name");
+                String uniqueCode=rs.getString("uniquecode");
+                String city=rs.getString("city");
+                String airfear=rs.getString("airfear");
+
+                Traveller traveller=null;
+                if(airfear.equals("yes")){
+                    traveller=new AirFearTraveller(name,uniqueCode,city);
+                } else {
+                    traveller=new AllRoutesTraveller(name,uniqueCode,city);
+                }
+                this.travellers.add(traveller);
             }
             statement.close();
             connection.close();
@@ -184,8 +215,8 @@ public class Manager {
         LinkedList<String> que=new LinkedList<String>();
         Map<String,Boolean> visited=new HashMap<String,Boolean>();
 
-        visited.put(cityA,true);
         visited.put(cityB,false);
+        visited.put(cityA,true);
         que.add(cityA);
 
         while(que.size()>0){
@@ -216,8 +247,8 @@ public class Manager {
         LinkedList<String> que=new LinkedList<String>();
         Map<String,Boolean> visited=new HashMap<String,Boolean>();
 
-        visited.put(cityA,true);
         visited.put(cityB,false);
+        visited.put(cityA,true);
         que.add(cityA);
 
         while(que.size()>0){
@@ -227,7 +258,7 @@ public class Manager {
 
             que.removeFirst();
             for(Route r:cities.get(currIdx).routes){
-                if (r instanceof GroundRoute){
+                if (r instanceof AirRoute){
                     continue;
                 }
 
