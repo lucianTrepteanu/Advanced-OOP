@@ -1,9 +1,9 @@
 /*
-    TODO: derivat din Route -> aerial Route / groundRoute
-          (se poate face calatoria doar "pe jos"?)
-          Adaugat clasa Calator ?
-          Audit!
+    TODO: x
  */
+import Entities.*;
+import GUI.MainFrame;
+import Services.*;
 
 import java.io.IOException;
 
@@ -78,6 +78,6 @@ public class Main {
         /*System.out.println(tr1.canTravel("Mallorca"));
         System.out.println(tr2.canTravel("Mallorca"));*/
 
-        //MainFrame mainFrame=new MainFrame();
+        MainFrame mainFrame=new MainFrame();
     }
 }
