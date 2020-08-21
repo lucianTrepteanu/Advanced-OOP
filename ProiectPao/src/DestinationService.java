@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -13,7 +14,9 @@ public class DestinationService {
         return inst;
     }
 
-    public String showDestinations(){
+    public String showDestinations()throws IOException {
+        Audit.printQuery("showDestinations",Thread.currentThread().getName());
+
         String result="";
 
         String dbUrl="jdbc:mysql://localhost:3306/pao";
@@ -38,7 +41,9 @@ public class DestinationService {
         return result;
     }
 
-    public void addDestination(Destination dest){
+    public void addDestination(Destination dest)throws IOException{
+        Audit.printQuery("addDestination",Thread.currentThread().getName());
+
         Manager manager=Manager.getInst();
         manager.cities.add(dest);
 
@@ -59,7 +64,9 @@ public class DestinationService {
         }
     }
 
-    public void deleteDestination(Destination dest){
+    public void deleteDestination(Destination dest) throws IOException{
+        Audit.printQuery("deleteDestination",Thread.currentThread().getName());
+
         Manager manager=Manager.getInst();
         RouteService routeService=RouteService.getInst();
 
@@ -86,9 +93,10 @@ public class DestinationService {
         }
     }
 
-    public void editDestination(String name,String newName,int newPop,double newPrice){
-        Manager manager=Manager.getInst();
+    public void editDestination(String name,String newName,int newPop,double newPrice)throws IOException{
+        Audit.printQuery("editDestination",Thread.currentThread().getName());
 
+        Manager manager=Manager.getInst();
         int idx=manager.getIndex(name);
 
         manager.cities.get(idx).setName(newName);

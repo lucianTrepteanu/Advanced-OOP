@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -13,7 +14,9 @@ public class TripService {
         return inst;
     }
 
-    public String showTrips(){
+    public String showTrips() throws IOException {
+        Audit.printQuery("showTrips",Thread.currentThread().getName());
+
         String result="";
         Manager manager=Manager.getInst();
 
@@ -49,7 +52,9 @@ public class TripService {
         return result;
     }
 
-    public void addTrip(Trip trip){
+    public void addTrip(Trip trip) throws IOException {
+        Audit.printQuery("addTrip",Thread.currentThread().getName());
+
         Manager manager=Manager.getInst();
         manager.trips.add(trip);
         manager.updatePopularity(trip);

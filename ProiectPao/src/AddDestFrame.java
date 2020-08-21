@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class AddDestFrame {
     private JFrame frame;
@@ -9,7 +10,7 @@ public class AddDestFrame {
     private JTextField nameField;
     private JButton submitButton;
 
-    public AddDestFrame(){
+    public AddDestFrame() throws IOException {
         frame=new JFrame("Destinations");
         nameField=new JTextField("Add city name");
         nameField.setSize(50,100);
@@ -25,15 +26,19 @@ public class AddDestFrame {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String name=nameField.getText();
-                int idx=manager.getIndex(name);
-                if(idx<0){
-                    Destination dest=new Destination(name);
-                    System.out.println(dest);
-                    destinationService.addDestination(dest);
-                    label.setText("City added successfully");
-                } else {
-                    label.setText("City already added");
+                try{
+                    String name=nameField.getText();
+                    int idx=manager.getIndex(name);
+                    if(idx<0){
+                        Destination dest=new Destination(name);
+                        System.out.println(dest);
+                        destinationService.addDestination(dest);
+                        label.setText("City added successfully");
+                    } else {
+                        label.setText("City already added");
+                    }
+                } catch (Exception exception){
+                    System.out.println(exception);
                 }
             }
         });

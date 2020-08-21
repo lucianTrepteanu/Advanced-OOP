@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -13,9 +14,10 @@ public class RouteService {
         return inst;
     }
 
-    public String showRoutes(){
-        String result="";
+    public String showRoutes()throws IOException {
+        Audit.printQuery("showRoutes",Thread.currentThread().getName());
 
+        String result="";
         String dbUrl="jdbc:mysql://localhost:3306/pao";
         String dbUser="root";
         String dbPass="root";
@@ -41,7 +43,9 @@ public class RouteService {
         return result;
     }
 
-    public void addRoute(Route route){
+    public void addRoute(Route route) throws IOException{
+        Audit.printQuery("addRoute",Thread.currentThread().getName());
+
         Manager manager=Manager.getInst();
         manager.routes.add(route);
 
@@ -84,7 +88,9 @@ public class RouteService {
         }
     }
 
-    public void deleteRoute(Route route){
+    public void deleteRoute(Route route) throws IOException{
+        Audit.printQuery("deleteRoute",Thread.currentThread().getName());
+
         Manager manager=Manager.getInst();
         manager.routes.remove(route);
         for(Destination dest: manager.cities){
@@ -117,7 +123,9 @@ public class RouteService {
         }
     }
 
-    public void editRoute(Route route,double newDistance,int newTime,double newMoney){
+    public void editRoute(Route route,double newDistance,int newTime,double newMoney) throws IOException{
+        Audit.printQuery("editRoute",Thread.currentThread().getName());
+
         Manager manager=Manager.getInst();
 
         for(Route r: manager.routes){

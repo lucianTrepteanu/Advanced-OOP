@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 
@@ -15,7 +16,7 @@ public class Manager {
     public ArrayList<Route> routes=new ArrayList<Route>();
     public ArrayList<Trip> trips=new ArrayList<Trip>();
 
-    public void updatePopularity(Trip trip){
+    public void updatePopularity(Trip trip) throws IOException{
         if(trip.isUsed()==1){
             return;
         }
@@ -35,7 +36,9 @@ public class Manager {
                 trip.getTo().getName(),newPop,newAvg);
     }
 
-    public void loadDestinations(){
+    public void loadDestinations() throws IOException {
+        Audit.printQuery("loadDestinations",Thread.currentThread().getName());
+
         cities.clear();
         String dbUrl="jdbc:mysql://localhost:3306/pao";
         String dbUser="root";
@@ -57,7 +60,9 @@ public class Manager {
         }
     }
 
-    public void loadRoutes(){
+    public void loadRoutes() throws  IOException{
+        Audit.printQuery("loadRoutes",Thread.currentThread().getName());
+
         routes.clear();
         String dbUrl="jdbc:mysql://localhost:3306/pao";
         String dbUser="root";
@@ -100,7 +105,9 @@ public class Manager {
         }
     }
 
-    public void loadTrips(){
+    public void loadTrips() throws IOException{
+        Audit.printQuery("loadTrips",Thread.currentThread().getName());
+
         Manager manager=Manager.getInst();
 
         String dbUrl="jdbc:mysql://localhost:3306/pao";
