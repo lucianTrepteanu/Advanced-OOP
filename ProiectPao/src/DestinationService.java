@@ -61,11 +61,17 @@ public class DestinationService {
 
     public void deleteDestination(Destination dest){
         Manager manager=Manager.getInst();
+        RouteService routeService=RouteService.getInst();
 
         String currName=dest.getName();
         int idx=manager.getIndex(currName);
 
         manager.cities.remove(idx);
+        for(Route r: manager.routes){
+            if(r.getfDest().equals(dest.getName()) || r.getsDest().equals(dest.getName())){
+                routeService.deleteRoute(r);
+            }
+        }
 
         String dbUrl="jdbc:mysql://localhost:3306/pao";
         String dbUser="root";
@@ -84,6 +90,7 @@ public class DestinationService {
         Manager manager=Manager.getInst();
 
         int idx=manager.getIndex(name);
+
         manager.cities.get(idx).setName(newName);
         manager.cities.get(idx).setPopularity(newPop);
         manager.cities.get(idx).setAvgPricePerDay(newPrice);

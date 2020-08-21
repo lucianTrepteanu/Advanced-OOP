@@ -76,4 +76,80 @@ public class RouteService {
             System.out.println(e);
         }
     }
+
+    public void deleteRoute(Route route){
+        Manager manager=Manager.getInst();
+        manager.routes.remove(route);
+        for(Destination dest: manager.cities){
+            for(int i=0;i<dest.routes.size();i++){
+                if(dest.routes.get(i).equals(route)){
+                    dest.routes.remove(i);
+                }
+            }
+        }
+
+        String dbUrl="jdbc:mysql://localhost:3306/pao";
+        String dbUser="root";
+        String dbPass="root";
+
+        try{
+            Connection connection= DriverManager.getConnection(dbUrl,dbUser,dbPass);
+            Statement statement=connection.createStatement();
+            String sqlQuery="delete from routes where "
+                    +"fDest="+"'"+route.getfDest()+"'"+" AND "
+                    +"sDest="+"'"+route.getsDest()+"'"+" AND "
+                    +"distance="+ route.getDistance()+" AND "
+                    +"time="+route.getTime()+" AND "
+                    +"money="+route.getMoneyCost();
+
+            statement.execute(sqlQuery);
+            statement.close();
+            connection.close();
+        } catch(Exception e){
+            System.out.println(e);
+        }
+    }
+
+    public void editRoute(Route route,double newDistance,int newTime,double newMoney){
+        Manager manager=Manager.getInst();
+
+        for(Route r: manager.routes){
+            if(r.equals(route)){
+                r.setDistance(newDistance);
+                r.setTime(newTime);
+                r.setMoneyCost(newMoney);
+            }
+        }
+
+        for(Destination dest: manager.cities){
+            for(Route r:dest.routes){
+                if(r.equals(route)){
+                    r.setDistance(newDistance);
+                    r.setTime(newTime);
+                    r.setMoneyCost(newMoney);
+                }
+            }
+        }
+
+        String dbUrl="jdbc:mysql://localhost:3306/pao";
+        String dbUser="root";
+        String dbPass="root";
+        try{
+            Connection connection=DriverManager.getConnection(dbUrl,dbUser,dbPass);
+            Statement statement=connection.createStatement();
+            String sqlQuery="update routes set distance="+newDistance
+                    +",time="+newTime
+                    +",money="+newMoney
+                    +" where fDest="+"'"+route.getfDest()+"'"
+                    +" AND sDest="+"'"+route.getsDest()+"'"
+                    +" AND distance="+route.getDistance()
+                    +" AND time="+route.getTime()
+                    +" AND money="+route.getMoneyCost()
+                    ;
+            System.out.println(sqlQuery);
+            statement.execute(sqlQuery);
+        } catch (Exception exception){
+            System.out.println(exception);
+        }
+    }
 }

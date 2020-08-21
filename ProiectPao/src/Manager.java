@@ -13,7 +13,6 @@ public class Manager {
 
     public ArrayList<Destination> cities=new ArrayList<Destination>();
     public ArrayList<Route> routes=new ArrayList<Route>();
-    //public ArrayList<Vehicles> vehicles=new ArrayList<Vehicles>();
     public ArrayList<Trip> trips=new ArrayList<Trip>();
 
     public void updatePopularity(Trip trip){
@@ -82,8 +81,6 @@ public class Manager {
                 int sIdx=this.getIndex(sDest);
 
                 Route route=new Route(fDest,sDest,distance,time,money);
-                route.setIndex(currIdx);
-                currIdx++;
 
                 this.cities.get(fIdx).addRoute(route);
                 this.cities.get(sIdx).addRoute(route);

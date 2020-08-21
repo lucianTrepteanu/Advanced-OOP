@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Route {
     private String fDest;
     private String sDest;
@@ -5,22 +7,12 @@ public class Route {
     private int time;
     private double moneyCost;
 
-    private int index;
-
     public Route(String fDest, String sDest, double distance, int time, double moneyCost) {
         this.fDest = fDest;
         this.sDest = sDest;
         this.distance = distance;
         this.time = time;
         this.moneyCost = moneyCost;
-    }
-
-    public double getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
     }
 
     void printData(){
@@ -47,6 +39,26 @@ public class Route {
         return moneyCost;
     }
 
+    public void setfDest(String fDest) {
+        this.fDest = fDest;
+    }
+
+    public void setsDest(String sDest) {
+        this.sDest = sDest;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+    }
+
+    public void setMoneyCost(double moneyCost) {
+        this.moneyCost = moneyCost;
+    }
+
     @Override
     public String toString() {
         return "" +
@@ -55,5 +67,22 @@ public class Route {
                 ", distance=" + distance +
                 ", time=" + time +
                 ", moneyCost=" + moneyCost;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Route route = (Route) o;
+        return Double.compare(route.distance, distance) == 0 &&
+                time == route.time &&
+                Double.compare(route.moneyCost, moneyCost) == 0 &&
+                fDest.equals(route.fDest) &&
+                sDest.equals(route.sDest);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fDest, sDest, distance, time, moneyCost);
     }
 }
