@@ -80,7 +80,7 @@ public class DestinationService {
         }
     }
 
-    public void editDestination(String name,String newName,int newPop,int newPrice){
+    public void editDestination(String name,String newName,int newPop,double newPrice){
         Manager manager=Manager.getInst();
 
         int idx=manager.getIndex(name);

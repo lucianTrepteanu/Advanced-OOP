@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Destination {
     protected int popularity;
     private String name;
-    private int avgPricePerDay;
+    private double avgPricePerDay;
     public ArrayList<Route> routes;
     private int index;
 
@@ -35,11 +35,11 @@ public class Destination {
     public void setIndex(int index) {
         this.index = index;
     }
-    public int getAvgPricePerDay() {
+    public double getAvgPricePerDay() {
         return avgPricePerDay;
     }
 
-    public void setAvgPricePerDay(int avgPricePerDay) {
+    public void setAvgPricePerDay(double avgPricePerDay) {
         this.avgPricePerDay = avgPricePerDay;
     }
 

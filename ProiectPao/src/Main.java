@@ -1,19 +1,19 @@
 /*
     TODO: derivat din Route -> aerial Route / groundRoute
-          Adaugat clasa Calator + boolean(vrea/nu vrea aerian)
-          Adaugat edit/delete in bazele de date
-          alte derivari?
-          Audit????
-          Frameurile sa mosteneasca dintr-o clasa mai mare?
+          (se poate face calatoria doar "pe jos"?)
+          Adaugat clasa Calator
+          Calatorie(sursa,destinatie,cost_total,nr_part)
+          Audit!
  */
 
 public class Main {
     public static void main(String[]args){
         Manager manager=Manager.getInst();
         manager.loadDestinations();
-        //manager.printDestinations();
         manager.loadRoutes();
         DestinationService destinationService=DestinationService.getInst();
+        RouteService routeService=RouteService.getInst();
+        TripService tripService=TripService.getInst();
 
         //Destination dest=new Destination(800,"Mallorca",300);
         //destinationService.addDestination(dest);
@@ -37,13 +37,17 @@ public class Main {
         //System.out.println(manager.getBest("Dragasani","Bucuresti",new DistanceCost()));
 
         //Route route=new Route("Paris","Toronto",3000,700,600);
-        RouteService routeService=RouteService.getInst();
         //System.out.println(routeService.showRoutes());
-        System.out.println();
         //routeService.addRoute(route);
-        manager.printRoutes();
 
-        //System.out.println(destinationService.showDestinations());
+        manager.loadTrips();
+        Destination cityA=manager.cities.get(manager.getIndex("Bucuresti"));
+        Destination cityB=manager.cities.get(manager.getIndex("Singapore"));
+
+        //Trip trip=new Trip(cityA,cityB,100,200.0,0);
+        //tripService.addTrip(trip);
+
+        System.out.println(tripService.showTrips());
 
         //MainFrame mainFrame=new MainFrame();
     }

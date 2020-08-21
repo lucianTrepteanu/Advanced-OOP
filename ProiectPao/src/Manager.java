@@ -13,7 +13,28 @@ public class Manager {
 
     public ArrayList<Destination> cities=new ArrayList<Destination>();
     public ArrayList<Route> routes=new ArrayList<Route>();
-    public ArrayList<Vehicles> vehicles=new ArrayList<Vehicles>();
+    //public ArrayList<Vehicles> vehicles=new ArrayList<Vehicles>();
+    public ArrayList<Trip> trips=new ArrayList<Trip>();
+
+    public void updatePopularity(Trip trip){
+        if(trip.isUsed()==1){
+            return;
+        }
+
+        int currPop=trip.getTo().getPopularity();
+        double currPrice=trip.getTo().getAvgPricePerDay()*trip.getTo().getPopularity();
+
+        int newPop=currPop+trip.getCntPers();
+        double newAvg=(currPrice+trip.getPrice())/newPop;
+
+        trip.getTo().setPopularity(newPop);
+        trip.getTo().setAvgPricePerDay(newAvg);
+        trip.setUsed(1);
+
+        DestinationService destinationService=DestinationService.getInst();
+        destinationService.editDestination(trip.getTo().getName(),
+                trip.getTo().getName(),newPop,newAvg);
+    }
 
     public void loadDestinations(){
         cities.clear();
@@ -67,6 +88,44 @@ public class Manager {
                 this.cities.get(fIdx).addRoute(route);
                 this.cities.get(sIdx).addRoute(route);
                 this.routes.add(route);
+            }
+            statement.close();
+            connection.close();
+        } catch (Exception e){
+            System.out.println(e);
+        }
+    }
+
+    public void loadTrips(){
+        Manager manager=Manager.getInst();
+
+        String dbUrl="jdbc:mysql://localhost:3306/pao";
+        String dbUser="root";
+        String dbPass="root";
+
+        try{
+            Connection connection= DriverManager.getConnection(dbUrl,dbUser,dbPass);
+            Statement statement=connection.createStatement();
+            String sqlQuery="select * from trips";
+            ResultSet rs=statement.executeQuery(sqlQuery);
+            while(rs.next()){
+                String fromName=rs.getString("fromname");
+                String toName=rs.getString("toname");
+                int cntPers=Integer.parseInt(rs.getString("cntpers"));
+                double price=Double.parseDouble(rs.getString("price"));
+                int used=Integer.parseInt(rs.getString("used"));
+
+                int fromIdx=manager.getIndex(fromName);
+                int toIdx=manager.getIndex(toName);
+
+                System.out.println(fromIdx);
+                System.out.println(toIdx);
+
+                Trip trip=new Trip(manager.cities.get(fromIdx),manager.cities.get(toIdx),cntPers,price,used);
+                System.out.println(trip.isUsed());
+                System.out.println();
+                this.updatePopularity(trip);
+                this.trips.add(trip);
             }
             statement.close();
             connection.close();
