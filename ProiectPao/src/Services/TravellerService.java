@@ -45,7 +45,7 @@ public class TravellerService {
                     traveller=new AllRoutesTraveller(name,uniqueCode,city);
                 }
 
-                result+=traveller+"\n";
+                result+=traveller.getName()+" "+traveller.getUniqueCode()+" "+traveller.getCity()+"\n";
             }
             statement.close();
             connection.close();

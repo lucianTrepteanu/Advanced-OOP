@@ -21,7 +21,6 @@ public class AddDestFrame {
         Manager manager=Manager.getInst();
         DestinationService destinationService=DestinationService.getInst();
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridLayout(3,1));
         frame.setSize(400,400);
         label=new JLabel();
