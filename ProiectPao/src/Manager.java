@@ -76,11 +76,18 @@ public class Manager {
                 double distance=Double.parseDouble(rs.getString("distance"));
                 int time=Integer.parseInt(rs.getString("time"));
                 double money=Double.parseDouble(rs.getString("money"));
+                String rtype=rs.getString("rtype");
 
                 int fIdx=this.getIndex(fDest);
                 int sIdx=this.getIndex(sDest);
 
-                Route route=new Route(fDest,sDest,distance,time,money);
+                Route route=null;
+
+                if(rtype=="air"){
+                    route=new AirRoute(fDest,sDest,distance,time,money);
+                } else {
+                    route=new GroundRoute(fDest,sDest,distance,time,money);
+                }
 
                 this.cities.get(fIdx).addRoute(route);
                 this.cities.get(sIdx).addRoute(route);
@@ -176,11 +183,9 @@ public class Manager {
 
         while(que.size()>0){
             String currentNode=que.getFirst();
-            System.out.println(currentNode);
 
             int currIdx=this.getIndex(currentNode);
 
-            System.out.println(currIdx);
             que.removeFirst();
             for(Route r:cities.get(currIdx).routes){
                 String other="";
@@ -189,7 +194,42 @@ public class Manager {
                 } else {
                     other=r.getfDest();
                 }
-                System.out.println(other);
+
+                if(visited.containsKey(other)==false || visited.get(other)==false){
+                    visited.put(other,true);
+                    que.add(other);
+                }
+            }
+        }
+
+        return visited.get(cityB);
+    }
+
+    public boolean canReachNoPlane(String cityA, String cityB){
+        LinkedList<String> que=new LinkedList<String>();
+        Map<String,Boolean> visited=new HashMap<String,Boolean>();
+
+        visited.put(cityA,true);
+        visited.put(cityB,false);
+        que.add(cityA);
+
+        while(que.size()>0){
+            String currentNode=que.getFirst();
+
+            int currIdx=this.getIndex(currentNode);
+
+            que.removeFirst();
+            for(Route r:cities.get(currIdx).routes){
+                if (r instanceof GroundRoute){
+                    continue;
+                }
+
+                String other="";
+                if(r.getfDest().compareTo(this.cities.get(currIdx).getName())==0){
+                    other=r.getsDest();
+                } else {
+                    other=r.getfDest();
+                }
 
                 if(visited.containsKey(other)==false || visited.get(other)==false){
                     visited.put(other,true);

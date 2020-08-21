@@ -63,10 +63,17 @@ public class RouteService {
         try{
             Connection connection= DriverManager.getConnection(dbUrl,dbUser,dbPass);
             Statement statement=connection.createStatement();
-            String sqlQuery="insert into routes (fDest,sDest,distance,time,money) values("+"'"+route.getfDest()
+            String rtype="";
+            if(route instanceof AirRoute){
+                rtype="air";
+            } else {
+                rtype="ground";
+            }
+            String sqlQuery="insert into routes (fDest,sDest,distance,time,money,rtype) values("+"'"+route.getfDest()
                     +"'"+","+"'"+route.getsDest()+"',"+route.getDistance()
                     +","+route.getTime()
                     +","+route.getMoneyCost()
+                    +","+"'"+rtype+"'"
                     +")";
             System.out.println(sqlQuery);
             statement.execute(sqlQuery);

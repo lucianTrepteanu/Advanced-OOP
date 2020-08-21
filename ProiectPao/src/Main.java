@@ -27,12 +27,15 @@ public class Main {
         //manager.printRoutes("Rm. Valcea");
         //manager.printRoutes();
 
+        /*System.out.println(manager.canReach("Dragasani","Mallorca"));
+        System.out.println(manager.canReachNoPlane("Dragasani","Mallorca"));*/
         /*System.out.println(manager.canReach("Dragasani","Paris"));
         System.out.println(manager.getBest("Dragasani","Bucuresti",new DistanceCost()));*/
 
-        /*Route route=new Route("Paris","Dragasani",25000,500,400);
+        /*Route route=new AirRoute("Paris","Dragasani",25000,500,400);
         routeService.addRoute(route);
         System.out.println(routeService.showRoutes());
+
         routeService.editRoute(route,10,1000000,20);
         System.out.println(routeService.showRoutes());*/
 
